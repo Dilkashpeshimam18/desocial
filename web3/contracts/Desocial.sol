@@ -47,5 +47,30 @@ contract Desocial {
         return posts;
     }
 
+     function tipToPost(uint postId) public  payable {
+                uint amount = 0.1 ether;
+
+        Post storage post=allPost[postId];
+        post.tippers.push(msg.sender);
+        post.tips.push(amount);
+
+        (bool sent,)=payable (post.owner).call{value:amount}('');
+        if(sent){
+            post.totalTip=post.totalTip+amount;
+        }
+    }
+
+    function addLike(uint _postId) public {
+        Post storage post=allPost[_postId];
+
+        post.likes++;
+    }
+
+    function addComment(uint _postId, string memory _comment) public {
+        Post storage post=allPost[_postId];
+        post.comments.push(_comment);
+    }
+
+
 
 }
